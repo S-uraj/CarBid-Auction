@@ -1,0 +1,32 @@
+#eureka:
+#  client:
+#    registerWithEureka: true
+#    fetchRegistry: true
+#    serviceUrl:
+#      defaultZone: http://localhost:8761
+
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: Auth-Service
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/**
+        - id: Seller-Service
+          uri: lb://SELLER-SERVICE
+          predicates:
+            - Path=/seller/**
+          filters:
+            - AuthenticationFilter
+        - id: Buyer-Service
+          uri: lb://BUYER-SERVICE
+          predicates:
+            - Path=/buyer/**
+          filters:
+            - AuthenticationFilter
+        - id: Product-Service
+          uri: lb://PRODUCT-SERVICE
+          predicates:
+            - Path=/product/**

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/CarService/pom.xml" />
+        <option value="$PROJECT_DIR$/AuthService/pom.xml" />
+        <option value="$PROJECT_DIR$/UserService/pom.xml" />
+        <option value="$PROJECT_DIR$/DiscoveryService/pom.xml" />
+        <option value="$PROJECT_DIR$/BuyerService/pom.xml" />
+        <option value="$PROJECT_DIR$/discovery-server/pom.xml" />
+        <option value="$PROJECT_DIR$/gateway-service/pom.xml" />
+        <option value="$PROJECT_DIR$/auth-service 2/pom.xml" />
+        <option value="$PROJECT_DIR$/buyer-serivce/pom.xml" />
+        <option value="$PROJECT_DIR$/product-serivce/pom.xml" />
+        <option value="$PROJECT_DIR$/seller-serivce/pom.xml" />
+        <option value="$PROJECT_DIR$/auth-service/pom.xml" />
+        <option value="$PROJECT_DIR$/car-service/pom.xml" />
+      </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/AuthService/pom.xml" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_20" default="true" project-jdk-name="20" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>
