@@ -10,7 +10,9 @@
         <module name="auth-service" />
         <module name="discovery-server" />
         <module name="gateway-service" />
+        <module name="seller-serivce" />
         <module name="CarService" />
+        <module name="car-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -19,9 +21,7 @@
       <module name="auth-service (2)" target="17" />
       <module name="buyer-serivce" target="17" />
       <module name="car" target="17" />
-      <module name="car-service" target="17" />
       <module name="Discovery" target="17" />
-      <module name="seller-serivce" target="17" />
       <module name="user" target="17" />
     </bytecodeTargetLevel>
   </component>

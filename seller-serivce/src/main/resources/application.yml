@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/carBid"
+    username: "postgres"
+    password: "1020"
+    driverClassName: "org.postgresql.Driver"
+
+  jpa:
+    hibernate:
+      ddl-auto: "update"
+    show-sql: "false"
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: "false"
+        dialect: "org.hibernate.dialect.PostgreSQLDialect"
+
+
+#eureka:
+#  client:
+#    registerWithEureka: true
+#    fetchRegistry: true
+#    serviceUrl:
+#      defaultZone: http://localhost:8761
