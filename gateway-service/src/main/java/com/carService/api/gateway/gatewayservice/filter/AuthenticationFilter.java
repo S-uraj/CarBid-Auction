@@ -53,7 +53,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
             } catch (Exception e) {
                 System.out.println("invalid access...!");
-                throw new ApplicationException("un authorized access to application", e.getMessage(), HttpStatus.BAD_REQUEST);
+                throw new ApplicationException("unauthorized access to application", e.getMessage(), HttpStatus.BAD_REQUEST);
             }
             return chain.filter(exchange);
         });

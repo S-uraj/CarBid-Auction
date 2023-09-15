@@ -1,10 +1,10 @@
-package com.CarService.CarService;
+package com.example.carBid.buyer.buyerserivce;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CarServiceApplicationTests {
+class BuyerSerivceApplicationTests {
 
 	@Test
 	void contextLoads() {

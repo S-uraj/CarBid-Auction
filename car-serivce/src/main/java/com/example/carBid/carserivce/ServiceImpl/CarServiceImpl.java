@@ -84,8 +84,9 @@ public class CarServiceImpl implements CarService {
         System.out.println(sellerDTO.toString());
         List<Bid> bids = bidRepo.fetchBidForCar(carId).get();
         CarDTO carDTO = CarDTO.builder().carId(carId).name(car.getName())
-                .model(car.getModel()).color(car.getColor()).ownerType(car.getOwnerType())
+                .color(car.getColor()).ownerType(car.getOwnerType())
                 .category(car.getCategory()).minimumBidAmount(car.getMinimumBidAmount())
+                .transmissionType(car.getTransmissionType()).modelYear(car.getModelYear())
                 .listedDateTime(car.getListedDateTime()).seller(sellerDTO).bidsMade(bids).build();
         return  carDTO;
     }
@@ -126,5 +127,54 @@ public class CarServiceImpl implements CarService {
 
     public void deleteCarById(long carId) {
         carRepo.deleteById(carId);
+    }
+
+    @Override
+    public List<CarDTO> fetchCarByTransmissionType(String transmissionType) {
+        try{
+            log.info(("Inside fetchCarByTransmissionType function"));
+            List<Car> cars=carRepo.findCarByTransmissionType(transmissionType);
+
+            List<CarDTO> carDTOList = cars.stream().map(car -> CarDTO.builder().carId(car.getCarId()).name(car.getName()).category(car.getCategory())
+                    .ownerType(car.getOwnerType()).transmissionType(car.getTransmissionType()).modelYear(car.getModelYear()).seller( fetchSellerForCar(car.getSellerId())).
+                    listedDateTime(car.getListedDateTime()).minimumBidAmount(car.getMinimumBidAmount()).color(car.getColor()).build()).toList();
+            return carDTOList;
+
+        }catch (Exception e){
+            throw  new ApplicationException("no Cars with transmission Type"+transmissionType,e.getMessage(),HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @Override
+    public List<CarDTO> fetchCarByModelYear(String modelYear) {
+        try{
+            log.info(("Inside fetchCarByModelYear function"));
+            List<Car> cars=carRepo.findCarByModelYear(modelYear);
+
+            List<CarDTO> carDTOList = cars.stream().map(car -> CarDTO.builder().carId(car.getCarId()).name(car.getName()).category(car.getCategory())
+                    .ownerType(car.getOwnerType()).transmissionType(car.getTransmissionType()).modelYear(car.getModelYear()).seller( fetchSellerForCar(car.getSellerId())).
+                    listedDateTime(car.getListedDateTime()).minimumBidAmount(car.getMinimumBidAmount()).color(car.getColor()).build()).toList();
+            return carDTOList;
+
+        }catch (Exception e){
+            throw  new ApplicationException("no Cars with Model Year"+modelYear,e.getMessage(),HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Override
+    public List<CarDTO> fetchCarByCategory(String category) {
+        try{
+            log.info(("Inside fetchCarByCategory function"));
+            List<Car> cars=carRepo.findCarByCategory(category);
+
+            List<CarDTO> carDTOList = cars.stream().map(car -> CarDTO.builder().carId(car.getCarId()).name(car.getName()).category(car.getCategory())
+                    .ownerType(car.getOwnerType()).transmissionType(car.getTransmissionType()).modelYear(car.getModelYear()).seller( fetchSellerForCar(car.getSellerId())).
+                    listedDateTime(car.getListedDateTime()).minimumBidAmount(car.getMinimumBidAmount()).color(car.getColor()).build()).toList();
+            return carDTOList;
+
+        }catch (Exception e){
+            throw  new ApplicationException("no Cars with category"+category,e.getMessage(),HttpStatus.NOT_FOUND);
+        }
     }
 }

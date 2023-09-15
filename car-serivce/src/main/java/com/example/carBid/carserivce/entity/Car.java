@@ -24,10 +24,11 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long carId;
     private String name;
-    private String model;
     private  String color;
     private String ownerType;
     private String category;
+    private String modelYear;
+    private String transmissionType;
     private double minimumBidAmount;
     private LocalDateTime listedDateTime;
     private long sellerId;

@@ -22,7 +22,7 @@ public class CarController {
     @PostMapping("/add")
     public ResponseEntity<String> addCar(@RequestBody Car carInfo, @RequestParam("sellerId") long id){
         carService.addCar(carInfo,id);
-        return new ResponseEntity("Car added successfully", HttpStatus.OK);
+        return new ResponseEntity("http://localhost:8084/buyer/car/fetchDetails/"+carInfo.getCarId(), HttpStatus.OK);
     }
 
     @GetMapping("/fetchAll")
@@ -56,4 +56,22 @@ public class CarController {
           List<BidsBySellerDTO> bids = carService.fetchAllBids(id);
           return new ResponseEntity(bids,HttpStatus.OK);
         }
+
+    @GetMapping("/fetchCarByTransmissionType")
+    public  ResponseEntity<List<CarDTO>> fetchCarByTransmissionType(@RequestParam("transmissionType") String transmissionType){
+        List<CarDTO> cars=carService.fetchCarByTransmissionType(transmissionType);
+        return new ResponseEntity<>(cars,HttpStatus.OK);
+    }
+
+    @GetMapping("/fetchCarByModelYear")
+    public  ResponseEntity<List<CarDTO>> fetchCarByModelYear(@RequestParam("modelYear") String modelYear){
+        List<CarDTO> cars=carService.fetchCarByModelYear(modelYear);
+        return new ResponseEntity<>(cars,HttpStatus.OK);
+    }
+
+    @GetMapping("/fetchCarByCategory")
+    public  ResponseEntity<List<CarDTO>> fetchCarByCategory(@RequestParam("category") String category){
+        List<CarDTO> cars=carService.fetchCarByModelYear(category);
+        return new ResponseEntity<>(cars,HttpStatus.OK);
+    }
 }

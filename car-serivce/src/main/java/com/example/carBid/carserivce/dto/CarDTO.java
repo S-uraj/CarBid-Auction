@@ -13,9 +13,10 @@ public class CarDTO {
     private long carId;
     private String name;
     private String category;
-    private String model;
     private  String color;
     private String ownerType;
+    private String modelYear;
+    private String transmissionType;
     private double minimumBidAmount;
     private LocalDateTime listedDateTime;
     private SellerDTO seller;

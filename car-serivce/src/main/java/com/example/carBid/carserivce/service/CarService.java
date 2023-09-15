@@ -23,4 +23,8 @@ public interface CarService {
     List<BidsBySellerDTO> fetchAllBids(long id);
 
     void deleteCarById(long productId);
+
+    List<CarDTO> fetchCarByTransmissionType(String transmissionType);
+    List<CarDTO> fetchCarByModelYear(String modelYear);
+    List<CarDTO> fetchCarByCategory(String modelYear);
 }

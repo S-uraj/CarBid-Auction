@@ -1,6 +1,4 @@
-package com.example.carBid.seller.sellerserivce.dto;
-
-
+package com.example.carBid.buyer.buyerserivce.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,5 +19,5 @@ public class CarDTO {
     private String transmissionType;
     private double minimumBidAmount;
     private LocalDateTime listedDateTime;
-    private List<BidDTO> bidsMade;
+    private SellerDTO seller;
 }

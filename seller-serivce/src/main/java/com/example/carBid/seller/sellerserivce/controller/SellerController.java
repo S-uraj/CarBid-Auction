@@ -35,10 +35,10 @@ public class SellerController {
     }
 
     @PostMapping("/addCar")
-    public ResponseEntity addCar(@RequestBody CarDTO carDTO, @RequestParam("userName") String userName){
+    public ResponseEntity<String> addCar(@RequestBody CarDTO carDTO, @RequestParam("userName") String userName){
                 String response = sellerServiceImpl.addCar(carDTO,userName);
-                return new
-                        ResponseEntity(response,HttpStatus.OK);
+
+                return new ResponseEntity(response,HttpStatus.OK);
     }
 
     @GetMapping("/profile")

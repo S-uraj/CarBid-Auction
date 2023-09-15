@@ -44,10 +44,7 @@ public class JwtFilter extends OncePerRequestFilter {
             role = jwtService.extractRoles(jwt).replace("[","").replace("]","");
             log.info(role);
             if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-//                if (role.equalsIgnoreCase("buyer"))
-//                    user = buyerService.loadUserByUsername(userName);
-//                if (role.equalsIgnoreCase("seller"))
-//                    user = sellerService.loadUserByUsername(userName);
+
               user = userService.loadUserByUsername(userName);
 
                 if (jwtService.isTokenValid(jwt, user)) {

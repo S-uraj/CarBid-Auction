@@ -1,6 +1,4 @@
-package com.example.carBid.seller.sellerserivce.dto;
-
-
+package com.example.carBid.buyer.buyerserivce.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,16 +8,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class CarDTO {
+@AllArgsConstructor
+public class CarDetailsDTO {
     private String name;
     private String category;
     private  String color;
     private String ownerType;
-    private String modelYear;
-    private String transmissionType;
+    private long carId;
     private double minimumBidAmount;
     private LocalDateTime listedDateTime;
-    private List<BidDTO> bidsMade;
+    private SellerDTO seller;
+    private List<Bid> bidsMade;
+
 }

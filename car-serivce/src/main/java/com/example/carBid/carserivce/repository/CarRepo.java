@@ -21,4 +21,8 @@ public interface CarRepo extends JpaRepository<Car,Long> {
 
     @Query(value = "Select * from car ", nativeQuery = true )
     public Optional<List<Car>> findAllPage(Pageable pageable);
+
+    public List<Car> findCarByTransmissionType(String transmissionType);
+    public List<Car> findCarByModelYear(String modelYear);
+    public List<Car> findCarByCategory(String category);
 }

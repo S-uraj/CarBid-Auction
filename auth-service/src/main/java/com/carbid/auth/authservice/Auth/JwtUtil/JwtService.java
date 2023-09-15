@@ -14,7 +14,7 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private String signKey = "fastkart";
+    private String signKey = "carBid";
     public String extractUserName(String token) {
         return extractClaims(token,Claims::getSubject);
     }

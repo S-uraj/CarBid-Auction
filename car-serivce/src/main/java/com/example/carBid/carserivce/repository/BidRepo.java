@@ -12,11 +12,11 @@ import java.util.Optional;
 @Repository
 public interface BidRepo extends JpaRepository<Bid,Long> {
 
-    @Query(value = "Select * from bids where fk_product=:id order by bid_date_time desc", nativeQuery = true)
+    @Query(value = "Select * from bids where fk_car=:id order by bid_date_time desc", nativeQuery = true)
     public Optional<List<Bid>> fetchBidForCar(@Param("id") long id);
 
-    @Query(value = "Select * from bids where fk_product=:productId and buyer_id=:buyerId", nativeQuery = true)
-    public Optional<Bid> bidAlreadyExist(@Param("productId") long productId, @Param("buyerId") long buyerId);
+    @Query(value = "Select * from bids where fk_car=:carId and buyer_id=:buyerId", nativeQuery = true)
+    public Optional<Bid> bidAlreadyExist(@Param("carId") long carId, @Param("buyerId") long buyerId);
 
     @Query(value = "Select * from bids where buyer_id=:buyerId", nativeQuery = true)
     public Optional<List<Bid>> fetchAllBidsForBuyer(@Param("buyerId") long buyerId);

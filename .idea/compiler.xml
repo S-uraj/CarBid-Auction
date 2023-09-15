@@ -8,19 +8,19 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="auth-service" />
+        <module name="buyer-serivce" />
         <module name="discovery-server" />
+        <module name="car-service" />
         <module name="gateway-service" />
         <module name="seller-serivce" />
-        <module name="CarService" />
-        <module name="car-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Auth" target="17" />
       <module name="auth-service (1)" target="17" />
       <module name="auth-service (2)" target="17" />
-      <module name="buyer-serivce" target="17" />
       <module name="car" target="17" />
+      <module name="CarService" target="17" />
       <module name="Discovery" target="17" />
       <module name="user" target="17" />
     </bytecodeTargetLevel>
