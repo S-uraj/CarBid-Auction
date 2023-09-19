@@ -1,9 +1,7 @@
 package com.example.carBid.carserivce.controller;
 
 import com.example.carBid.carserivce.ServiceImpl.CarServiceImpl;
-import com.example.carBid.carserivce.dto.BidRequestDTO;
-import com.example.carBid.carserivce.dto.BidsBySellerDTO;
-import com.example.carBid.carserivce.dto.CarDTO;
+import com.example.carBid.carserivce.dto.*;
 import com.example.carBid.carserivce.entity.Car;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +25,7 @@ public class CarController {
 
     @GetMapping("/fetchAll")
     public ResponseEntity fetchAllCars(@RequestParam("pageNo") int pgNo, @RequestParam("size") int size) {
-        List<Car> listOfProd = carService.fetchAllCars(pgNo, size);
+        List<CarDTO> listOfProd = carService.fetchAllCars(pgNo, size);
         return  new ResponseEntity(listOfProd,HttpStatus.OK);
     }
 
@@ -42,7 +40,7 @@ public class CarController {
     public ResponseEntity<String> placeBid(@RequestBody BidRequestDTO bidBody){
         System.out.println(bidBody.toString());
         carService.addBid(bidBody.getBidMadeDTO(),bidBody.getBuyerDTO());
-        return new ResponseEntity<>("Bid Placed successfully for product "+bidBody.getBidMadeDTO().getCarId(),HttpStatus.OK);
+        return new ResponseEntity<>("Bid Placed successfully for car "+bidBody.getBidMadeDTO().getCarId(),HttpStatus.OK);
     }
 
     @GetMapping("/fetchAllForSeller")
@@ -73,5 +71,17 @@ public class CarController {
     public  ResponseEntity<List<CarDTO>> fetchCarByCategory(@RequestParam("category") String category){
         List<CarDTO> cars=carService.fetchCarByModelYear(category);
         return new ResponseEntity<>(cars,HttpStatus.OK);
+    }
+
+    @PostMapping("/sellCar")
+    public ResponseEntity<SoldCarDetail> sellCar(@RequestBody SellRequest sellRequest){
+        SoldCarDetail soldCarDetail=carService.sellCar(sellRequest);
+        return new ResponseEntity<>(soldCarDetail,HttpStatus.OK);
+    }
+
+    @GetMapping("/soldCar")
+    public ResponseEntity<List<SoldCarDetail>> soldCarList(){
+        List<SoldCarDetail> soldCarList=carService.soldCarList();
+        return  new ResponseEntity<>(soldCarList,HttpStatus.OK);
     }
 }

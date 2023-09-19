@@ -1,5 +1,6 @@
 package com.example.carBid.seller.sellerserivce.serviceimpl;
 
+import com.example.carBid.seller.sellerserivce.dto.SoldCarDetail;
 import com.example.carBid.seller.sellerserivce.repository.SellerRepo;
 import com.example.carBid.seller.sellerserivce.Exception.ApplicationException;
 import com.example.carBid.seller.sellerserivce.Service.SellerService;
@@ -79,5 +80,28 @@ public class SellerServiceImpl implements SellerService {
         SellerDTO sellerDTO = new SellerDTO(seller.getId(),seller.getUserName(),seller.getName(),seller.getLastName(),seller.getEmail(),seller.getPhone());
         return sellerDTO;
     }
+
+    @Override
+    public SoldCarDetail sellCar(long carId, long buyerId) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+            return restTemplate.exchange("http://localhost:8082/car/sellCar?carId="+carId+"&buyerId" + buyerId,
+                    HttpMethod.POST, null, SoldCarDetail.class).getBody();
+        }catch (Exception e){
+            throw  new ApplicationException(e.getLocalizedMessage(),e.getMessage(),HttpStatus.BAD_REQUEST);
+
+        }
+    }
+    @Override
+    public List<SoldCarDetail> soldCarList() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        List<SoldCarDetail> soldCarDetailList=restTemplate.exchange("http://localhost:8082/car/soldCar",
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<SoldCarDetail>>(){
+                }).getBody();
+        return soldCarDetailList;
+    }
+
 
 }

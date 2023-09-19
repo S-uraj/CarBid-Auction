@@ -31,7 +31,9 @@ public class Car {
     private String transmissionType;
     private double minimumBidAmount;
     private LocalDateTime listedDateTime;
+    private String status;
     private long sellerId;
+    private long buyerId;
     @OneToMany(mappedBy = "car")
     private List<Bid> bidsMade;
 

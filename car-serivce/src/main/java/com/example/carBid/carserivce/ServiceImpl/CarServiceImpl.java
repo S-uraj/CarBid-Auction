@@ -38,6 +38,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public void addCar(Car carInfo, long sellerId){
         log.info("inside addCar function");
+        carInfo.setStatus("Auctioned");
 //        Seller currSeller = sellerRepo.findByEmail(email).get();
         carInfo.setSellerId(sellerId);
         carRepo.save(carInfo);
@@ -55,11 +56,17 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<Car> fetchAllCars(int pgNo,int size) {
+    public List<CarDTO> fetchAllCars(int pgNo,int size) {
         try {
             log.info("Inside fetchAllCars function");
             Pageable firstPageWithTwoElements = PageRequest.of(pgNo - 1, size, Sort.by("listed_date_time").descending());
-            return carRepo.findAllPage(firstPageWithTwoElements).get();
+            List<Car> cars=carRepo.findAllPage(firstPageWithTwoElements).get();
+
+            List<CarDTO> carDTOList = cars.stream().map(car -> CarDTO.builder().carId(car.getCarId()).name(car.getName()).category(car.getCategory()).status(car.getStatus())
+                    .ownerType(car.getOwnerType()).transmissionType(car.getTransmissionType()).modelYear(car.getModelYear()).seller( fetchSellerForCar(car.getSellerId())).
+                    listedDateTime(car.getListedDateTime()).minimumBidAmount(car.getMinimumBidAmount()).color(car.getColor()).build()).toList();
+            return carDTOList;
+
         }catch(Exception e){
             throw new ApplicationException(e.toString(),e.getMessage(),HttpStatus.BAD_REQUEST);
         }
@@ -95,21 +102,37 @@ public class CarServiceImpl implements CarService {
 
     @Transactional
     public void addBid(BidMadeDTO bidMadeDTO, BuyerDTO buyer){
-        Car bidCar = carRepo.getReferenceById(bidMadeDTO.getCarId());
-        Optional<Bid> previousBid = bidRepo.bidAlreadyExist(bidMadeDTO.getCarId(),buyer.getId());
-        if(!previousBid.isEmpty()){
-            bidRepo.deleteById(previousBid.get().getBidId());
+
+        Car bidCar=carRepo.getReferenceById(bidMadeDTO.getCarId());
+        List<Bid> previousBids=bidCar.getBidsMade();
+        if (bidCar.getStatus()=="Sold"){
+            throw new ApplicationException("Car Already Sold", null, HttpStatus.BAD_REQUEST);
         }
-        log.info("inside add Bid function");
+
+        if ( bidMadeDTO.getBidAmount() < bidCar.getMinimumBidAmount()){
+            log.info("Please Enter High Bid Amount");
+            throw new ApplicationException("Please Enter High Bid Amount", null, HttpStatus.BAD_REQUEST);
+
+        }
+        if( !previousBids.isEmpty()) {
+            for (Bid previousBid : previousBids) {
+                if (bidMadeDTO.getBidAmount() < previousBid.getBidAmount() ) {
+                    log.info("Please Enter High Bid Amount");
+                    throw new ApplicationException("Please Enter High Bid Amount", null, HttpStatus.BAD_REQUEST);
+                }
+            }
+        }
         Bid bid = Bid.builder().car(bidCar).buyerId(buyer.getId()).buyerEmail(buyer.getBuyerEmail())
                 .buyerName(buyer.getBuyerName()).bidAmount(bidMadeDTO.getBidAmount()).bidDateTime(LocalDateTime.now())
                 .build();
-        List<Bid> bidList = new ArrayList<>();
-        bidList = bidCar.getBidsMade();
+        List<Bid> bidList = bidCar.getBidsMade();
         bidList.add(bid);
         bidCar.setBidsMade(bidList);
         bidRepo.save(bid);
         carRepo.save(bidCar);
+
+
+
     }
 
     public List<BidsBySellerDTO> fetchAllBids(long id) {
@@ -135,7 +158,7 @@ public class CarServiceImpl implements CarService {
             log.info(("Inside fetchCarByTransmissionType function"));
             List<Car> cars=carRepo.findCarByTransmissionType(transmissionType);
 
-            List<CarDTO> carDTOList = cars.stream().map(car -> CarDTO.builder().carId(car.getCarId()).name(car.getName()).category(car.getCategory())
+            List<CarDTO> carDTOList = cars.stream().map(car -> CarDTO.builder().carId(car.getCarId()).name(car.getName()).category(car.getCategory()).status(car.getStatus())
                     .ownerType(car.getOwnerType()).transmissionType(car.getTransmissionType()).modelYear(car.getModelYear()).seller( fetchSellerForCar(car.getSellerId())).
                     listedDateTime(car.getListedDateTime()).minimumBidAmount(car.getMinimumBidAmount()).color(car.getColor()).build()).toList();
             return carDTOList;
@@ -152,7 +175,7 @@ public class CarServiceImpl implements CarService {
             log.info(("Inside fetchCarByModelYear function"));
             List<Car> cars=carRepo.findCarByModelYear(modelYear);
 
-            List<CarDTO> carDTOList = cars.stream().map(car -> CarDTO.builder().carId(car.getCarId()).name(car.getName()).category(car.getCategory())
+            List<CarDTO> carDTOList = cars.stream().map(car -> CarDTO.builder().carId(car.getCarId()).name(car.getName()).category(car.getCategory()).status(car.getStatus())
                     .ownerType(car.getOwnerType()).transmissionType(car.getTransmissionType()).modelYear(car.getModelYear()).seller( fetchSellerForCar(car.getSellerId())).
                     listedDateTime(car.getListedDateTime()).minimumBidAmount(car.getMinimumBidAmount()).color(car.getColor()).build()).toList();
             return carDTOList;
@@ -165,16 +188,59 @@ public class CarServiceImpl implements CarService {
     @Override
     public List<CarDTO> fetchCarByCategory(String category) {
         try{
-            log.info(("Inside fetchCarByCategory function"));
+            log.info("Inside fetchCarByCategory function");
             List<Car> cars=carRepo.findCarByCategory(category);
 
-            List<CarDTO> carDTOList = cars.stream().map(car -> CarDTO.builder().carId(car.getCarId()).name(car.getName()).category(car.getCategory())
+            List<CarDTO> carDTOList = cars.stream().map(car -> CarDTO.builder().carId(car.getCarId()).name(car.getName()).category(car.getCategory()).status(car.getStatus())
                     .ownerType(car.getOwnerType()).transmissionType(car.getTransmissionType()).modelYear(car.getModelYear()).seller( fetchSellerForCar(car.getSellerId())).
                     listedDateTime(car.getListedDateTime()).minimumBidAmount(car.getMinimumBidAmount()).color(car.getColor()).build()).toList();
             return carDTOList;
 
         }catch (Exception e){
             throw  new ApplicationException("no Cars with category"+category,e.getMessage(),HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Override
+    public SoldCarDetail sellCar(SellRequest sellRequest) {
+        try{
+            log.info("sellCar Function");
+            Car car=carRepo.getReferenceById(sellRequest.getCarId());
+
+            SoldCarDetail soldCar=new SoldCarDetail();
+            soldCar.setName(car.getName());
+            soldCar.setBuyerName(bidRepo.findBidByBuyerId(sellRequest.getBuyerId()).getBuyerName());
+            soldCar.setSeller(fetchSellerForCar(car.getSellerId()));
+            soldCar.setMinimumBidAmount(car.getMinimumBidAmount());
+            soldCar.setBidAmount(bidRepo.findBidByBuyerId(car.getBuyerId()).getBidAmount());
+            car.setStatus("Sold");
+            car.setBuyerId(sellRequest.getBuyerId());
+            carRepo.save(car);
+            return soldCar;
+        }catch (Exception e){
+            throw new ApplicationException("carId not find ",e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Override
+    public List<SoldCarDetail> soldCarList() {
+        try{
+            log.info("Inside SoldCarList");
+            List<Car> carList=carRepo.findAll();
+            List<SoldCarDetail> soldCarDetailList=new ArrayList<>();
+            carList.stream().filter(car -> car.getStatus().equals("Sold")).forEach(car -> {
+                SoldCarDetail soldCar=new SoldCarDetail();
+                soldCar.setName(car.getName());
+                soldCar.setListedDateTime(car.getListedDateTime());
+                soldCar.setMinimumBidAmount(car.getMinimumBidAmount());
+                soldCar.setBuyerName(bidRepo.findBidByBuyerId(car.getBuyerId()).getBuyerName());
+                soldCar.setSeller(fetchSellerForCar(car.getSellerId()));
+                soldCar.setBidAmount(bidRepo.findBidByBuyerId(car.getBuyerId()).getBidAmount());
+                soldCarDetailList.add(soldCar);
+            });
+            return soldCarDetailList;
+        } catch(Exception e){
+            throw  new ApplicationException("No Car Sold Yet",e.getMessage(),HttpStatus.NOT_FOUND);
         }
     }
 }

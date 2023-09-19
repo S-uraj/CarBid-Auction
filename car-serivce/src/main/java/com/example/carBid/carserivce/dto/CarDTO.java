@@ -21,5 +21,7 @@ public class CarDTO {
     private LocalDateTime listedDateTime;
     private SellerDTO seller;
     private List<Bid> bidsMade;
+    private String status;
+
 
 }

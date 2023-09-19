@@ -5,6 +5,7 @@ import com.example.carBid.buyer.buyerserivce.service.BuyerService;
 import com.example.carBid.buyer.buyerserivce.Exception.ApplicationException;
 import com.example.carBid.buyer.buyerserivce.entity.Buyer;
 import com.example.carBid.buyer.buyerserivce.repository.BuyerRepo;
+import com.example.carBid.seller.sellerserivce.dto.SoldCarDetail;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -44,9 +45,9 @@ public class BuyerServiceImpl implements BuyerService {
         uriVariables.put("pageNo", pgNo);
         uriVariables.put("size", size);
         log.info("http://localhost:8082/car/fetchAll?pageNo="+pgNo+"&size="+size,"url");
-       List<CarDTO> products = restTemplate.exchange("http://localhost:8082/car/fetchAll?pageNo="+pgNo+"&size="+size,
+       List<CarDTO> carDTOList = restTemplate.exchange("http://localhost:8082/car/fetchAll?pageNo="+pgNo+"&size="+size,
                 HttpMethod.GET, entity, new ParameterizedTypeReference<List<CarDTO>>(){}, uriVariables).getBody();
-       return products;
+       return carDTOList;
     }
 
     public CarDetailsDTO fetchCarDetails(long carId) {
@@ -62,6 +63,7 @@ public class BuyerServiceImpl implements BuyerService {
     public String addBid(BidMadeDTO bidBody) {
         Buyer buyer = getBuyerByUserName(bidBody.getBuyerUserName());
         System.out.println(buyer.toString());
+
         BuyerDTO buyerDTO = BuyerDTO.builder().id(buyer.getId()).userName(buyer.getUserName()).buyerEmail(buyer.getEmail()).buyerName(buyer.getName()).build();
         BidRequestDTO bidRequestDTO = BidRequestDTO.builder().bidMadeDTO(bidBody).buyerDTO(buyerDTO)
                 .build();
@@ -110,5 +112,15 @@ public class BuyerServiceImpl implements BuyerService {
         List<CarDTO> carsList=restTemplate.exchange("http://localhost:8082/car/fetchCarByCategory?category=" +category,
                 HttpMethod.GET, entity, new ParameterizedTypeReference<List<CarDTO>>(){}).getBody();
         return carsList;
+    }
+
+    @Override
+    public List<SoldCarDetail> soldCarList() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        List<SoldCarDetail> soldCarDetailList=restTemplate.exchange("http://localhost:8082/car/soldCar",
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<SoldCarDetail>>(){
+        }).getBody();
+        return soldCarDetailList;
     }
 }

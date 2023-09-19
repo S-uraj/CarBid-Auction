@@ -5,6 +5,7 @@ import com.example.carBid.buyer.buyerserivce.dto.BidsBySellerDTO;
 import com.example.carBid.buyer.buyerserivce.dto.CarDTO;
 import com.example.carBid.buyer.buyerserivce.dto.CarDetailsDTO;
 import com.example.carBid.buyer.buyerserivce.entity.Buyer;
+import com.example.carBid.seller.sellerserivce.dto.SoldCarDetail;
 
 import java.util.List;
 
@@ -18,5 +19,7 @@ public interface BuyerService {
     public List<CarDTO> fetchCarByTransmissionType(String transmissionType);
     public List<CarDTO> fetchCarByModelYear(String modelYear);
     public List<CarDTO> fetchCarByCategory(String category);
+
+    public List<SoldCarDetail> soldCarList();
 
 }

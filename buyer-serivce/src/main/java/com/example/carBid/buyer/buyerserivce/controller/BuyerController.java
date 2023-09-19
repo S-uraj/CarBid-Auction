@@ -6,6 +6,7 @@ import com.example.carBid.buyer.buyerserivce.entity.Buyer;
 import com.example.carBid.buyer.buyerserivce.serviceimpl.BuyerServiceImpl;
 import com.example.carBid.buyer.buyerserivce.dto.BidMadeDTO;
 import com.example.carBid.buyer.buyerserivce.dto.CarDTO;
+import com.example.carBid.seller.sellerserivce.dto.SoldCarDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,6 +70,12 @@ public class BuyerController {
     public  ResponseEntity<List<CarDTO>> fetchCarByCategory(@RequestParam("category") String category){
         List<CarDTO> cars=buyerService.fetchCarByCategory(category);
         return new ResponseEntity<>(cars,HttpStatus.OK);
+    }
+
+    @GetMapping("/soldCar")
+    public ResponseEntity<List<SoldCarDetail>> soldCarList(){
+        List<SoldCarDetail> soldCarDetailList=buyerService.soldCarList();
+        return new ResponseEntity<>(soldCarDetailList,HttpStatus.OK);
     }
 }
 

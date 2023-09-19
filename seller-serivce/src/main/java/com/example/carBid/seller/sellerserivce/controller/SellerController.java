@@ -1,5 +1,6 @@
 package com.example.carBid.seller.sellerserivce.controller;
 
+import com.example.carBid.seller.sellerserivce.dto.SoldCarDetail;
 import com.example.carBid.seller.sellerserivce.serviceimpl.SellerServiceImpl;
 import com.example.carBid.seller.sellerserivce.dto.CarDTO;
 import com.example.carBid.seller.sellerserivce.dto.SellerDTO;
@@ -55,4 +56,15 @@ public class SellerController {
         return new ResponseEntity(seller,HttpStatus.OK);
     }
 
+    @PostMapping("/sellCar")
+    public ResponseEntity sellCar(@RequestParam("carId") long carId,@RequestParam("buyerId") long buyerId){
+        log.info("Inside /sellCar mapping");
+        SoldCarDetail soldCarDetail=sellerServiceImpl.sellCar(carId,buyerId);
+        return  new ResponseEntity(soldCarDetail,HttpStatus.OK);
+    }
+    @GetMapping("/soldCar")
+    public ResponseEntity<List<SoldCarDetail>> soldCarList(){
+        List<SoldCarDetail> soldCarDetailList=sellerServiceImpl.soldCarList();
+        return new ResponseEntity<>(soldCarDetailList,HttpStatus.OK);
+    }
 }

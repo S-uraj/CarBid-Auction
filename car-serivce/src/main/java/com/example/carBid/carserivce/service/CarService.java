@@ -12,7 +12,7 @@ public interface CarService {
 
     List<Car> fetchAllCarForSeller(long sellerId, int pgNo, int size);
 
-    List<Car> fetchAllCars(int pgNo, int size);
+    List<CarDTO> fetchAllCars(int pgNo, int size);
 
     CarDTO fetchCarDetails(long productId);
 
@@ -27,4 +27,8 @@ public interface CarService {
     List<CarDTO> fetchCarByTransmissionType(String transmissionType);
     List<CarDTO> fetchCarByModelYear(String modelYear);
     List<CarDTO> fetchCarByCategory(String modelYear);
+
+    SoldCarDetail sellCar(SellRequest sellRequest);
+
+    List<SoldCarDetail> soldCarList();
 }

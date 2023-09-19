@@ -20,5 +20,9 @@ public interface BidRepo extends JpaRepository<Bid,Long> {
 
     @Query(value = "Select * from bids where buyer_id=:buyerId", nativeQuery = true)
     public Optional<List<Bid>> fetchAllBidsForBuyer(@Param("buyerId") long buyerId);
+
+    public Bid findBidByBuyerId(long buyerId);
+
+
 }
 
