@@ -16,7 +16,7 @@ import java.util.List;
 public class BuyerController {
 
     @Autowired
-    private BuyerServiceImpl buyerService;
+    public BuyerServiceImpl buyerService;
 
 
     @GetMapping("/profile")

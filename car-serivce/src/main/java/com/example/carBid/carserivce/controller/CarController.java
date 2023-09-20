@@ -15,7 +15,7 @@ import java.util.List;
 public class CarController {
 
     @Autowired
-    private CarServiceImpl carService;
+    public CarServiceImpl carService;
 
     @PostMapping("/add")
     public ResponseEntity<String> addCar(@RequestBody Car carInfo, @RequestParam("sellerId") long id){
