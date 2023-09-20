@@ -22,5 +22,6 @@ public class CarDTO {
     private double minimumBidAmount;
     private LocalDateTime listedDateTime;
     private List<BidDTO> bidsMade;
+    private List<CommentDTO> comments;
     private  String status;
 }

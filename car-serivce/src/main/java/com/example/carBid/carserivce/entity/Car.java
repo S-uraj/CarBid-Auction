@@ -36,5 +36,7 @@ public class Car {
     private long buyerId;
     @OneToMany(mappedBy = "car")
     private List<Bid> bidsMade;
+    @OneToMany(mappedBy = "car")
+    private List<Comment>  comments;
 
 }

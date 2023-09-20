@@ -84,4 +84,11 @@ public class CarController {
         List<SoldCarDetail> soldCarList=carService.soldCarList();
         return  new ResponseEntity<>(soldCarList,HttpStatus.OK);
     }
+
+    @PostMapping("/addComment")
+    public ResponseEntity<CarDTO> addComment(@RequestBody CommentRequest commentRequest){
+        CarDTO car=carService.addComment(commentRequest);
+        return new ResponseEntity<>(car,HttpStatus.OK);
+
+    }
 }

@@ -123,4 +123,20 @@ public class BuyerServiceImpl implements BuyerService {
         }).getBody();
         return soldCarDetailList;
     }
+
+    @Override
+    public CarDetailsDTO addComment(CommentRequest commentRequest) {
+        try{ HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+            HttpEntity<CommentRequest> entity = new HttpEntity<CommentRequest>(commentRequest, headers);
+            return restTemplate.exchange("http://localhost:8082/car/addComment",
+                    HttpMethod.POST, entity, CarDetailsDTO.class).getBody();
+        }catch (Exception e){
+            throw new com.example.carBid.seller.sellerserivce.Exception.ApplicationException(e.getLocalizedMessage(),e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+
+    }
 }
+
+
+

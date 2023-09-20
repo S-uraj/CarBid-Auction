@@ -1,5 +1,6 @@
 package com.example.carBid.seller.sellerserivce.serviceimpl;
 
+import com.example.carBid.seller.sellerserivce.dto.CommentRequest;
 import com.example.carBid.seller.sellerserivce.dto.SoldCarDetail;
 import com.example.carBid.seller.sellerserivce.repository.SellerRepo;
 import com.example.carBid.seller.sellerserivce.Exception.ApplicationException;
@@ -101,6 +102,19 @@ public class SellerServiceImpl implements SellerService {
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<SoldCarDetail>>(){
                 }).getBody();
         return soldCarDetailList;
+    }
+
+    @Override
+    public CarDTO addComment(CommentRequest commentRequest) {
+       try{ HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        HttpEntity<CommentRequest> entity = new HttpEntity<CommentRequest>(commentRequest, headers);
+        return restTemplate.exchange("http://localhost:8082/car/addComment",
+                HttpMethod.POST, entity, CarDTO.class).getBody();
+       }catch (Exception e){
+           throw new ApplicationException(e.getLocalizedMessage(),e.getMessage(),HttpStatus.BAD_REQUEST);
+       }
+
     }
 
 

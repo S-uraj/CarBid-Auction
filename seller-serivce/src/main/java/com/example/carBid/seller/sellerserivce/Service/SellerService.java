@@ -2,6 +2,7 @@ package com.example.carBid.seller.sellerserivce.Service;
 
 
 import com.example.carBid.seller.sellerserivce.dto.CarDTO;
+import com.example.carBid.seller.sellerserivce.dto.CommentRequest;
 import com.example.carBid.seller.sellerserivce.dto.SellerDTO;
 import com.example.carBid.seller.sellerserivce.dto.SoldCarDetail;
 import com.example.carBid.seller.sellerserivce.entity.Seller;
@@ -21,7 +22,9 @@ public interface SellerService {
     SellerDTO fetchSellerDetails(long id);
 
     SoldCarDetail sellCar(long carId,long buyerId);
-    public List<SoldCarDetail> soldCarList();
+     List<SoldCarDetail> soldCarList();
+
+    CarDTO addComment(CommentRequest commentRequest);
 
 
 

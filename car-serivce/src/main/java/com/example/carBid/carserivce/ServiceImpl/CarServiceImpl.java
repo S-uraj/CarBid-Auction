@@ -2,10 +2,12 @@ package com.example.carBid.carserivce.ServiceImpl;
 
 import com.example.carBid.carserivce.dto.*;
 import com.example.carBid.carserivce.entity.Bid;
+import com.example.carBid.carserivce.entity.Comment;
 import com.example.carBid.carserivce.repository.BidRepo;
 import com.example.carBid.carserivce.repository.CarRepo;
 import com.example.carBid.carserivce.entity.Car;
 import com.example.carBid.carserivce.Exception.ApplicationException;
+import com.example.carBid.carserivce.repository.CommentRepo;
 import com.example.carBid.carserivce.service.CarService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,9 @@ public class CarServiceImpl implements CarService {
 
     @Autowired
     private BidRepo bidRepo;
+
+    @Autowired
+    private CommentRepo commentRepo;
 
 
     @Autowired
@@ -241,6 +246,37 @@ public class CarServiceImpl implements CarService {
             return soldCarDetailList;
         } catch(Exception e){
             throw  new ApplicationException("No Car Sold Yet",e.getMessage(),HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Override
+    public CarDTO addComment(CommentRequest commentRequest) {
+        try{
+            log.info("Inside addComment");
+            Car car=carRepo.getReferenceById(commentRequest.getCarId());
+            if (car==null){
+                throw new ApplicationException("carId not found","CarId not Found"+commentRequest.getCarId(),HttpStatus.NOT_FOUND);
+            }
+            if (car.getStatus().equals("Sold")){
+                throw new ApplicationException("Car Already Sold cannot add comment","Car Already Sold cannot add comment",HttpStatus.BAD_REQUEST);
+            }
+            Comment comment= Comment.builder().comment(commentRequest.getComment()).car(car).commentBy(commentRequest.getCommentBy()).build();
+
+
+            List<Comment> commentList=car.getComments();
+            commentList.add(comment);
+            CarDTO carDTO=CarDTO.builder().carId(car.getCarId()).status(car.getStatus())
+                    .comments(commentList).seller(fetchSellerForCar(car.getSellerId())).color(car.getColor()).category(car.getCategory()).minimumBidAmount(car.getMinimumBidAmount())
+                    .listedDateTime(car.getListedDateTime()).transmissionType(car.getTransmissionType()).ownerType(car.getOwnerType()).bidsMade(car.getBidsMade())
+                    .modelYear(car.getModelYear()).name(car.getName()).build();
+
+            car.setComments(commentList);
+            commentRepo.save(comment);
+            carRepo.save(car);
+            return carDTO;
+
+        }catch (Exception e){
+            throw new ApplicationException("something wrong happpened",e.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
 }

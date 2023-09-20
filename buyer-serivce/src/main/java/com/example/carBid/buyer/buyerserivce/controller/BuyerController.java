@@ -1,11 +1,8 @@
 package com.example.carBid.buyer.buyerserivce.controller;
 
-import com.example.carBid.buyer.buyerserivce.dto.BidsBySellerDTO;
-import com.example.carBid.buyer.buyerserivce.dto.CarDetailsDTO;
+import com.example.carBid.buyer.buyerserivce.dto.*;
 import com.example.carBid.buyer.buyerserivce.entity.Buyer;
 import com.example.carBid.buyer.buyerserivce.serviceimpl.BuyerServiceImpl;
-import com.example.carBid.buyer.buyerserivce.dto.BidMadeDTO;
-import com.example.carBid.buyer.buyerserivce.dto.CarDTO;
 import com.example.carBid.seller.sellerserivce.dto.SoldCarDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -76,6 +73,12 @@ public class BuyerController {
     public ResponseEntity<List<SoldCarDetail>> soldCarList(){
         List<SoldCarDetail> soldCarDetailList=buyerService.soldCarList();
         return new ResponseEntity<>(soldCarDetailList,HttpStatus.OK);
+    }
+
+    @PostMapping("/addComment")
+    public ResponseEntity addComment(@RequestBody CommentRequest commentRequest){
+        CarDetailsDTO car=buyerService.addComment(commentRequest);
+        return new ResponseEntity<>(car,HttpStatus.OK);
     }
 }
 

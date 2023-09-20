@@ -1,5 +1,6 @@
 package com.example.carBid.seller.sellerserivce.controller;
 
+import com.example.carBid.seller.sellerserivce.dto.CommentRequest;
 import com.example.carBid.seller.sellerserivce.dto.SoldCarDetail;
 import com.example.carBid.seller.sellerserivce.serviceimpl.SellerServiceImpl;
 import com.example.carBid.seller.sellerserivce.dto.CarDTO;
@@ -66,5 +67,11 @@ public class SellerController {
     public ResponseEntity<List<SoldCarDetail>> soldCarList(){
         List<SoldCarDetail> soldCarDetailList=sellerServiceImpl.soldCarList();
         return new ResponseEntity<>(soldCarDetailList,HttpStatus.OK);
+    }
+
+    @PostMapping("/addComment")
+    public ResponseEntity<CarDTO> addComment(@RequestBody CommentRequest commentRequest){
+        CarDTO car=sellerServiceImpl.addComment(commentRequest);
+        return new ResponseEntity<>(car,HttpStatus.OK);
     }
 }

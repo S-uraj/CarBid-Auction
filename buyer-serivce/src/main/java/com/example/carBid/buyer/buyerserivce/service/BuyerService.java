@@ -1,25 +1,22 @@
 package com.example.carBid.buyer.buyerserivce.service;
 
-import com.example.carBid.buyer.buyerserivce.dto.BidMadeDTO;
-import com.example.carBid.buyer.buyerserivce.dto.BidsBySellerDTO;
-import com.example.carBid.buyer.buyerserivce.dto.CarDTO;
-import com.example.carBid.buyer.buyerserivce.dto.CarDetailsDTO;
+import com.example.carBid.buyer.buyerserivce.dto.*;
 import com.example.carBid.buyer.buyerserivce.entity.Buyer;
 import com.example.carBid.seller.sellerserivce.dto.SoldCarDetail;
 
 import java.util.List;
 
 public interface BuyerService {
-    public Buyer getBuyerByUserName(String userName);
-    public List<CarDTO> fetchAllCars(int pgNo, int size);
-    public CarDetailsDTO fetchCarDetails(long carId);
-    public String addBid(BidMadeDTO bidBody);
-    public List<BidsBySellerDTO> fetchAllBids(long id);
+    Buyer getBuyerByUserName(String userName);
+    List<CarDTO> fetchAllCars(int pgNo, int size);
+    CarDetailsDTO fetchCarDetails(long carId);
+    String addBid(BidMadeDTO bidBody);
+     List<BidsBySellerDTO> fetchAllBids(long id);
+     List<CarDTO> fetchCarByTransmissionType(String transmissionType);
+    List<CarDTO> fetchCarByModelYear(String modelYear);
+     List<CarDTO> fetchCarByCategory(String category);
 
-    public List<CarDTO> fetchCarByTransmissionType(String transmissionType);
-    public List<CarDTO> fetchCarByModelYear(String modelYear);
-    public List<CarDTO> fetchCarByCategory(String category);
+    List<SoldCarDetail> soldCarList();
 
-    public List<SoldCarDetail> soldCarList();
-
+    CarDetailsDTO addComment(CommentRequest commentRequest);
 }
