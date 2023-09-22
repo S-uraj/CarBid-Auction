@@ -1,0 +1,100 @@
+version: '3'
+services:
+  # Eureka Discovery Server
+  eureka-server:
+    image: springcloud/eureka
+    ports:
+      - "8761:8761"
+
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1020
+      POSTGRES_DB: carBid
+    volumes:
+      - ./postgres-order:/data/postgres
+    expose:
+      - "5431"
+    ports:
+      - "5431:5431"
+    restart: always
+
+  # Gateway Service
+  gateway-service:
+    build: ./gateway-service
+    ports:
+      - "8181:8080"
+    expose:
+      - "8181"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/carBid
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1020
+
+    depends_on:
+      - eureka-server
+      - postgres
+
+  # Car Service
+  car-service:
+    build: ./car-serivce
+
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/carBid
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1020
+
+
+    depends_on:
+      - eureka-server
+      - gateway-service
+      - postgres
+
+  # Auth Service
+  auth-service:
+    build: ./auth-service
+
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/carBid
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1020
+
+    depends_on:
+      - eureka-server
+      - gateway-service
+      - postgres
+
+  # Buyer Service
+  buyer-service:
+    build: ./buyer-serivce
+
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/carBid
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1020
+
+    depends_on:
+      - eureka-server
+      - gateway-service
+      - postgres
+
+  # Seller Service
+  seller-service:
+    build: ./seller-serivce
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/carBid
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1020
+
+    depends_on:
+      - eureka-server
+      - gateway-service
+      - postgres

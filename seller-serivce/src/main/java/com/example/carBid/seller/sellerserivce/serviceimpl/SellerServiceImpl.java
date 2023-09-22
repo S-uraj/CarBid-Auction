@@ -1,12 +1,9 @@
 package com.example.carBid.seller.sellerserivce.serviceimpl;
 
-import com.example.carBid.seller.sellerserivce.dto.CommentRequest;
-import com.example.carBid.seller.sellerserivce.dto.SoldCarDetail;
+import com.example.carBid.seller.sellerserivce.dto.*;
 import com.example.carBid.seller.sellerserivce.repository.SellerRepo;
 import com.example.carBid.seller.sellerserivce.Exception.ApplicationException;
 import com.example.carBid.seller.sellerserivce.Service.SellerService;
-import com.example.carBid.seller.sellerserivce.dto.CarDTO;
-import com.example.carBid.seller.sellerserivce.dto.SellerDTO;
 import com.example.carBid.seller.sellerserivce.entity.Seller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +43,10 @@ public class SellerServiceImpl implements SellerService {
             log.info("http://localhost:8082/car/fetchAllForSeller?sellerId="+seller.getId()+"&pageNo="+pgNo+"&size="+size,"url");
             List<CarDTO> cars = restTemplate.exchange("http://localhost:8082/car/fetchAllForSeller?sellerId="+seller.getId()+"&pageNo="+pgNo+"&size="+size,
                     HttpMethod.GET, entity, new ParameterizedTypeReference<List<CarDTO>>(){}, uriVariables).getBody();
+
+            if (cars.isEmpty()){
+                    throw new ApplicationException("Empty List","No car Added",HttpStatus.NOT_FOUND);
+            }
             return cars;
         } catch (Exception e) {
             throw new ApplicationException(e.getLocalizedMessage(), e.getMessage(), HttpStatus.NOT_FOUND);
@@ -105,12 +106,12 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public CarDTO addComment(CommentRequest commentRequest) {
+    public String addComment(CommentRequest commentRequest) {
        try{ HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         HttpEntity<CommentRequest> entity = new HttpEntity<CommentRequest>(commentRequest, headers);
         return restTemplate.exchange("http://localhost:8082/car/addComment",
-                HttpMethod.POST, entity, CarDTO.class).getBody();
+                HttpMethod.POST, entity, String.class).getBody();
        }catch (Exception e){
            throw new ApplicationException(e.getLocalizedMessage(),e.getMessage(),HttpStatus.BAD_REQUEST);
        }

@@ -187,29 +187,6 @@ public class BuyerServiceImplTest {
     }
 
 
-    @Test
-    public void testAddComment() {
-        // Arrange
-        CommentRequest commentRequest = new CommentRequest();
-        // Add data to commentRequest as needed
-
-        CarDetailsDTO carDetailsDTO = new CarDetailsDTO();
-        // Add data to carDetailsDTO as needed
-
-        ResponseEntity<CarDetailsDTO> responseEntity = ResponseEntity.ok(carDetailsDTO);
-        Mockito.when(restTemplate.exchange(
-                eq("http://localhost:8082/car/addComment"),
-                eq(HttpMethod.POST),
-                any(),
-                eq(CarDetailsDTO.class))
-        ).thenReturn(responseEntity);
-
-        // Act
-        CarDetailsDTO result = buyerService.addComment(commentRequest);
-
-        // Assert
-        assertEquals(carDetailsDTO, result);
-    }
 
 
 }

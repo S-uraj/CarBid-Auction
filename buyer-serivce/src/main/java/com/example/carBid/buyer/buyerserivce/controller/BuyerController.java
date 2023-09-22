@@ -3,7 +3,6 @@ package com.example.carBid.buyer.buyerserivce.controller;
 import com.example.carBid.buyer.buyerserivce.dto.*;
 import com.example.carBid.buyer.buyerserivce.entity.Buyer;
 import com.example.carBid.buyer.buyerserivce.serviceimpl.BuyerServiceImpl;
-import com.example.carBid.seller.sellerserivce.dto.SoldCarDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -77,7 +76,7 @@ public class BuyerController {
 
     @PostMapping("/addComment")
     public ResponseEntity addComment(@RequestBody CommentRequest commentRequest){
-        CarDetailsDTO car=buyerService.addComment(commentRequest);
+        CommentDTO car=buyerService.addComment(commentRequest);
         return new ResponseEntity<>(car,HttpStatus.OK);
     }
 }

@@ -1,10 +1,7 @@
 package com.example.carBid.seller.sellerserivce.SellerControllerTest;
 
 import com.example.carBid.seller.sellerserivce.controller.SellerController;
-import com.example.carBid.seller.sellerserivce.dto.CarDTO;
-import com.example.carBid.seller.sellerserivce.dto.CommentRequest;
-import com.example.carBid.seller.sellerserivce.dto.SellerDTO;
-import com.example.carBid.seller.sellerserivce.dto.SoldCarDetail;
+import com.example.carBid.seller.sellerserivce.dto.*;
 import com.example.carBid.seller.sellerserivce.entity.Seller;
 import com.example.carBid.seller.sellerserivce.serviceimpl.SellerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,7 +51,6 @@ public class SellerControllerTest {
         int pageNo = 0;
         int size = 10;
         List<CarDTO> carList = new ArrayList<>();
-        // Add some test data to carList
 
         Mockito.when(sellerService.fetchAllCarsForSeller(userName, pageNo, size)).thenReturn(carList);
 
@@ -125,7 +121,6 @@ public class SellerControllerTest {
     public void testSoldCarList() {
         // Arrange
         List<SoldCarDetail> soldCarDetailList = new ArrayList<>();
-        // Add some test data to soldCarDetailList
 
         Mockito.when(sellerService.soldCarList()).thenReturn(soldCarDetailList);
 
@@ -139,13 +134,12 @@ public class SellerControllerTest {
     public void testAddComment() {
         // Arrange
         CommentRequest commentRequest = new CommentRequest();
-        CarDTO carDTO = new CarDTO();
-        // Set some properties for the carDTO
+        CommentDTO commentDTO=new CommentDTO();
 
-        Mockito.when(sellerService.addComment(commentRequest)).thenReturn(carDTO);
+        Mockito.when(sellerService.addComment(commentRequest)).thenReturn("added");
 
         // Act
-        ResponseEntity<CarDTO> response = sellerController.addComment(commentRequest);
+        ResponseEntity<String> response = sellerController.addComment(commentRequest);
 
 
     }

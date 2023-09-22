@@ -86,9 +86,9 @@ public class CarController {
     }
 
     @PostMapping("/addComment")
-    public ResponseEntity<CarDTO> addComment(@RequestBody CommentRequest commentRequest){
-        CarDTO car=carService.addComment(commentRequest);
-        return new ResponseEntity<>(car,HttpStatus.OK);
+    public ResponseEntity<String> addComment(@RequestBody CommentRequest commentRequest){
+       CommentDTO car=carService.addComment(commentRequest);
+        return new ResponseEntity<>("Added Comment with for car"+car.getCarId(),HttpStatus.OK);
 
     }
 }

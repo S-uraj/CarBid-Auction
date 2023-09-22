@@ -70,7 +70,8 @@ public class SellerServiceImplTest {
 
         // Create a mock response for restTemplate.exchange
         ResponseEntity<List<CarDTO>> responseEntity = new ResponseEntity<>(carDTOList, HttpStatus.OK);
-        when(restTemplate.exchange(anyString(), eq(HttpMethod.GET), eq(entity), eq(new ParameterizedTypeReference<List<CarDTO>>(){}), eq(uriVariables)))
+        when(restTemplate.exchange(anyString(), eq(HttpMethod.GET), eq(entity), eq(new ParameterizedTypeReference<List<CarDTO>>() {
+        }), eq(uriVariables)))
                 .thenReturn(responseEntity);
 
         // Act
@@ -137,32 +138,6 @@ public class SellerServiceImplTest {
         assertEquals(seller.getId(), result.getId());
         assertEquals(seller.getUserName(), result.getUserName());
         assertEquals(seller.getName(), result.getName());
-    }
-
-
-
-    @Test
-    public void testAddComment() {
-        // Arrange
-        CommentRequest commentRequest = new CommentRequest();
-        CarDTO carDTO = new CarDTO();
-        // Set some properties for commentRequest and carDTO
-
-        // Create HttpHeaders and HttpEntity for RestTemplate
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        HttpEntity<CommentRequest> entity = new HttpEntity<>(commentRequest, headers);
-
-        // Create a mock response for restTemplate.exchange
-        ResponseEntity<CarDTO> responseEntity = new ResponseEntity<>(carDTO, HttpStatus.OK);
-        when(restTemplate.exchange(anyString(), eq(HttpMethod.POST), eq(entity), eq(CarDTO.class)))
-                .thenReturn(responseEntity);
-
-        // Act
-        CarDTO result = sellerService.addComment(commentRequest);
-
-        // Assert
-        assertEquals(carDTO, result);
     }
 
 

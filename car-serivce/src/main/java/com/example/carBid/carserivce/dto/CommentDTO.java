@@ -1,15 +1,15 @@
-package com.example.carBid.buyer.buyerserivce.dto;
-
+package com.example.carBid.carserivce.dto;
 
 import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Setter
+@Getter
 public class CommentDTO {
     private long carId;
     private String comment;
     private String commentBy;
+
 }

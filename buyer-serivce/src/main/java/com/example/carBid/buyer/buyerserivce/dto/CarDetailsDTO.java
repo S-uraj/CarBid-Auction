@@ -1,8 +1,6 @@
 package com.example.carBid.buyer.buyerserivce.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,6 +8,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
+@Getter
 public class CarDetailsDTO {
     private String name;
     private String category;
@@ -19,6 +19,8 @@ public class CarDetailsDTO {
     private double minimumBidAmount;
     private LocalDateTime listedDateTime;
     private SellerDTO seller;
+    private List<CommentDTO> comments;
     private List<Bid> bidsMade;
+
 
 }

@@ -32,6 +32,6 @@ public interface CarService {
 
     List<SoldCarDetail> soldCarList();
 
-    CarDTO addComment(CommentRequest commentRequest);
+    CommentDTO addComment(CommentRequest commentRequest);
 
 }

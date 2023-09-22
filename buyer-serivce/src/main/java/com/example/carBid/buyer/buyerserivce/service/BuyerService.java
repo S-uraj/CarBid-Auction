@@ -2,7 +2,6 @@ package com.example.carBid.buyer.buyerserivce.service;
 
 import com.example.carBid.buyer.buyerserivce.dto.*;
 import com.example.carBid.buyer.buyerserivce.entity.Buyer;
-import com.example.carBid.seller.sellerserivce.dto.SoldCarDetail;
 
 import java.util.List;
 
@@ -18,5 +17,5 @@ public interface BuyerService {
 
     List<SoldCarDetail> soldCarList();
 
-    CarDetailsDTO addComment(CommentRequest commentRequest);
+    CommentDTO addComment(CommentRequest commentRequest);
 }

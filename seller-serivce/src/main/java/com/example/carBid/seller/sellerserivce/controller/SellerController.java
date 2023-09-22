@@ -1,10 +1,7 @@
 package com.example.carBid.seller.sellerserivce.controller;
 
-import com.example.carBid.seller.sellerserivce.dto.CommentRequest;
-import com.example.carBid.seller.sellerserivce.dto.SoldCarDetail;
+import com.example.carBid.seller.sellerserivce.dto.*;
 import com.example.carBid.seller.sellerserivce.serviceimpl.SellerServiceImpl;
-import com.example.carBid.seller.sellerserivce.dto.CarDTO;
-import com.example.carBid.seller.sellerserivce.dto.SellerDTO;
 import com.example.carBid.seller.sellerserivce.entity.Seller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,8 +67,8 @@ public class SellerController {
     }
 
     @PostMapping("/addComment")
-    public ResponseEntity<CarDTO> addComment(@RequestBody CommentRequest commentRequest){
-        CarDTO car=sellerServiceImpl.addComment(commentRequest);
+    public ResponseEntity<String> addComment(@RequestBody CommentRequest commentRequest){
+       String car=sellerServiceImpl.addComment(commentRequest);
         return new ResponseEntity<>(car,HttpStatus.OK);
     }
 }

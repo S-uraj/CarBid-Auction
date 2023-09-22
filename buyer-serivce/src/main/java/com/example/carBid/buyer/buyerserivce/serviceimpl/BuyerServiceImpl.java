@@ -5,7 +5,6 @@ import com.example.carBid.buyer.buyerserivce.service.BuyerService;
 import com.example.carBid.buyer.buyerserivce.Exception.ApplicationException;
 import com.example.carBid.buyer.buyerserivce.entity.Buyer;
 import com.example.carBid.buyer.buyerserivce.repository.BuyerRepo;
-import com.example.carBid.seller.sellerserivce.dto.SoldCarDetail;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -125,14 +124,14 @@ public class BuyerServiceImpl implements BuyerService {
     }
 
     @Override
-    public CarDetailsDTO addComment(CommentRequest commentRequest) {
+    public CommentDTO addComment(CommentRequest commentRequest) {
         try{ HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
             HttpEntity<CommentRequest> entity = new HttpEntity<CommentRequest>(commentRequest, headers);
             return restTemplate.exchange("http://localhost:8082/car/addComment",
-                    HttpMethod.POST, entity, CarDetailsDTO.class).getBody();
+                    HttpMethod.POST, entity, CommentDTO.class).getBody();
         }catch (Exception e){
-            throw new com.example.carBid.seller.sellerserivce.Exception.ApplicationException(e.getLocalizedMessage(),e.getMessage(),HttpStatus.BAD_REQUEST);
+            throw new ApplicationException(e.getLocalizedMessage(),e.getMessage(),HttpStatus.BAD_REQUEST);
         }
 
     }

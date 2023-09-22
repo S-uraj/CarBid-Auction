@@ -1,10 +1,7 @@
 package com.example.carBid.seller.sellerserivce.Service;
 
 
-import com.example.carBid.seller.sellerserivce.dto.CarDTO;
-import com.example.carBid.seller.sellerserivce.dto.CommentRequest;
-import com.example.carBid.seller.sellerserivce.dto.SellerDTO;
-import com.example.carBid.seller.sellerserivce.dto.SoldCarDetail;
+import com.example.carBid.seller.sellerserivce.dto.*;
 import com.example.carBid.seller.sellerserivce.entity.Seller;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +21,7 @@ public interface SellerService {
     SoldCarDetail sellCar(long carId,long buyerId);
      List<SoldCarDetail> soldCarList();
 
-    CarDTO addComment(CommentRequest commentRequest);
+   String addComment(CommentRequest commentRequest);
 
 
 
